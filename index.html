@@ -3,17 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LivePulse — Real-Time Survey</title>
+<title>CAREtech</title>
 
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  // ══════════════════════════════════════════════════════════
-  //  🔧 PASTE YOUR FIREBASE CONFIG HERE
-  //  Firebase Console → Project Settings → Your Apps → SDK
-  // ══════════════════════════════════════════════════════════
 const firebaseConfig = {
 
   apiKey: "AIzaSyAT5bd-3SUfXrz9Se_7_rrlDg4PUWY-yCs",
@@ -31,8 +26,6 @@ const firebaseConfig = {
   measurementId: "G-LNV3EYMZ8V"
 
 };
-  // ══════════════════════════════════════════════════════════
-
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
   window.db = db;
@@ -42,12 +35,9 @@ const firebaseConfig = {
   window.dispatchEvent(new Event("firebase-ready"));
 </script>
 
-<!-- Chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<!-- html2canvas + jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -57,9 +47,9 @@ const firebaseConfig = {
   --border:#5a1f3a;--border2:#7a2b50;
   --accent:#ff6eb4;--accent2:#ff3d7f;--accent3:#c0176a;
   --yes:#ff6eb4;--yes2:#ffb3d9;--no:#8b1a3a;--no2:#c0395e;
+  --neu:#b06090;--neu2:#d4a0c0;
   --text:#fce8f0;--muted:#a06080;--muted2:#d48aaa;
-  --radius:14px;
-  --fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+  --radius:14px;--fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:15px;min-height:100vh;line-height:1.6}
@@ -67,32 +57,28 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:15px
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
 
-/* LOGIN */
+/* ── LOGIN ── */
 #login-screen{
   min-height:100vh;display:flex;align-items:center;justify-content:center;
   flex-direction:column;padding:2rem;
   background:radial-gradient(ellipse 60% 50% at 25% 15%,rgba(255,110,180,.13) 0%,transparent 70%),
              radial-gradient(ellipse 50% 40% at 75% 85%,rgba(139,26,58,.18) 0%,transparent 70%),var(--bg);
 }
-.login-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:24px;
-  padding:3rem 3.5rem;width:100%;max-width:440px;text-align:center;
-  box-shadow:0 40px 80px rgba(0,0,0,.5);
-}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:3rem 3.5rem;width:100%;max-width:440px;text-align:center;box-shadow:0 40px 80px rgba(0,0,0,.5)}
 .logo{font-family:var(--fh);font-size:2.4rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.25rem}
 .logo span{color:var(--accent)}
 .login-sub{color:var(--muted2);font-size:.9rem;margin-bottom:2.5rem}
 .field-label{display:block;text-align:left;font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem}
 input[type=text]{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.85rem 1.1rem;color:var(--text);font-family:var(--fb);font-size:1rem;outline:none;transition:border-color .2s;margin-bottom:1.5rem}
 input[type=text]:focus{border-color:var(--accent)}
-.btn-primary{width:100%;background:var(--accent);color:#0b0d13;border:none;border-radius:10px;padding:.9rem 1.5rem;font-family:var(--fh);font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.01em;transition:transform .15s,box-shadow .15s}
+.btn-primary{width:100%;background:var(--accent);color:#1a0810;border:none;border-radius:10px;padding:.9rem 1.5rem;font-family:var(--fh);font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.01em;transition:transform .15s,box-shadow .15s}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,110,180,.35)}
 
-/* APP SHELL */
+/* ── APP SHELL ── */
 #app{display:none;flex-direction:column;height:100vh}
 
-/* HEADER */
-.app-header{position:sticky;top:0;z-index:200;background:rgba(11,13,19,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:.8rem 1.75rem;display:flex;align-items:center;gap:.9rem;flex-shrink:0}
+/* ── HEADER ── */
+.app-header{position:sticky;top:0;z-index:200;background:rgba(26,8,16,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:.8rem 1.75rem;display:flex;align-items:center;gap:.9rem;flex-shrink:0}
 .header-logo{font-family:var(--fh);font-size:1.3rem;font-weight:800;letter-spacing:-.02em;margin-right:auto}
 .header-logo span{color:var(--accent)}
 .live-pill{display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:700;color:var(--accent);letter-spacing:.07em;text-transform:uppercase;background:rgba(255,110,180,.1);border:1px solid rgba(255,110,180,.28);border-radius:100px;padding:.28rem .75rem}
@@ -104,10 +90,10 @@ input[type=text]:focus{border-color:var(--accent)}
 .user-badge{display:flex;align-items:center;gap:.45rem;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:.32rem .85rem .32rem .38rem;font-size:.82rem;flex-shrink:0}
 .user-avatar{width:25px;height:25px;border-radius:50%;background:linear-gradient(135deg,#ff6eb4,#8b1a3a);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fce8f0;flex-shrink:0}
 
-/* BODY LAYOUT */
+/* ── LAYOUT ── */
 .app-body{display:flex;flex:1;overflow:hidden}
 
-/* SIDEBAR */
+/* ── SIDEBAR ── */
 .sidebar{width:228px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;padding:1.1rem 0}
 .sidebar-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 1.1rem;margin-bottom:.3rem;margin-top:.6rem}
 .sbtn{display:flex;align-items:center;gap:.55rem;width:100%;padding:.58rem 1.1rem;background:transparent;border:none;color:var(--muted2);font-family:var(--fb);font-size:.83rem;text-align:left;cursor:pointer;position:relative;transition:background .15s,color .15s}
@@ -116,76 +102,84 @@ input[type=text]:focus{border-color:var(--accent)}
 .sbtn.theme-active::before{content:'';position:absolute;left:0;top:5px;bottom:5px;width:3px;background:var(--accent);border-radius:0 3px 3px 0}
 .sbtn.sum-active{background:rgba(139,26,58,.2);color:#ff9fcc}
 .sbtn.sum-active::before{content:'';position:absolute;left:0;top:5px;bottom:5px;width:3px;background:#c0395e;border-radius:0 3px 3px 0}
-.si{font-size:1rem;flex-shrink:0}
-.sn{flex:1;font-weight:500;line-height:1.3}
+.si{font-size:1rem;flex-shrink:0}.sn{flex:1;font-weight:500;line-height:1.3}
 .sp{font-size:.66rem;background:var(--surface3);border-radius:100px;padding:.1rem .38rem;color:var(--muted);flex-shrink:0}
 
-/* MAIN */
+/* ── MAIN ── */
 .main-content{flex:1;overflow-y:auto;padding:2rem 2.5rem}
 
-/* CONFIG NOTICE */
+/* ── CONFIG NOTICE ── */
 .cfg{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.25);border-radius:10px;padding:.9rem 1.1rem;font-size:.83rem;color:#fca5a5;margin-bottom:1.5rem;display:none}
 .cfg.show{display:block}
 .cfg code{background:rgba(0,0,0,.3);padding:.1rem .32rem;border-radius:4px;font-size:.75rem}
 
-/* PAGE HEADERS */
+/* ── PAGE HEADERS ── */
 .pg-icon{font-size:2.1rem;margin-bottom:.35rem}
 .pg-title{font-family:var(--fh);font-size:1.85rem;font-weight:800;letter-spacing:-.035em}
 .pg-sub{color:var(--muted2);font-size:.87rem;margin-top:.2rem;margin-bottom:1.85rem}
 .pg-sub strong{color:#ff6eb4}
 
-/* OVERALL CARD */
+/* ── OVERALL CARD ── */
 .overall-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.6rem 1.9rem;margin-bottom:2rem}
 .oc-title{font-family:var(--fh);font-size:1.05rem;font-weight:700;margin-bottom:.2rem}
 .oc-sub{font-size:.81rem;color:var(--muted2);margin-bottom:1.3rem}
-.oc-stats{display:flex;gap:1.4rem;margin-bottom:1.3rem;flex-wrap:wrap}
-.ostat{text-align:center;min-width:80px}
-.ostat-num{font-family:var(--fh);font-size:1.9rem;font-weight:800;line-height:1}
-.ostat-num.y{color:#ff6eb4}.ostat-num.n{color:#c0395e}.ostat-num.t{color:#ff9fcc}.ostat-num.r{color:#ffb3d9}
-.ostat-lbl{font-size:.7rem;color:var(--muted);margin-top:.15rem}
+.oc-stats{display:flex;gap:1.2rem;margin-bottom:1.3rem;flex-wrap:wrap}
+.ostat{text-align:center;min-width:74px}
+.ostat-num{font-family:var(--fh);font-size:1.8rem;font-weight:800;line-height:1}
+.ostat-num.y{color:#ff6eb4}.ostat-num.n{color:#c0395e}.ostat-num.neu{color:#b06090}.ostat-num.t{color:#ff9fcc}.ostat-num.r{color:#ffb3d9}
+.ostat-lbl{font-size:.68rem;color:var(--muted);margin-top:.15rem}
 .chart-h240{height:240px;position:relative}
 
-/* THEME SUMMARY SECTIONS */
+/* ── THEME SUMMARY SECTIONS ── */
 .tss{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.6rem;margin-bottom:1.1rem}
 .tss-hd{display:flex;align-items:center;gap:.55rem;margin-bottom:1.1rem}
 .tss-ico{font-size:1.2rem}.tss-nm{font-family:var(--fh);font-size:.97rem;font-weight:700}
 .tss-tot{font-size:.72rem;color:var(--muted);margin-left:auto;background:var(--surface2);padding:.12rem .45rem;border-radius:6px}
 .chart-h130{height:130px;position:relative}
 
-/* QUESTION CARDS */
-.qgrid{display:flex;flex-direction:column;gap:1rem}
+/* ── QUESTION CARDS ── */
+.qgrid{display:flex;flex-direction:column;gap:1.1rem}
 .qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.5rem;transition:border-color .2s}
 .qcard:hover{border-color:var(--border2)}
+.qcard-img{width:100%;max-height:220px;object-fit:cover;border-radius:9px;margin-bottom:1rem;display:block}
 .qcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.9rem;margin-bottom:.95rem}
 .qtext{font-size:.93rem;font-weight:500;line-height:1.5;flex:1}
 .qnum{font-family:var(--fh);font-size:.66rem;font-weight:700;color:var(--muted);background:var(--surface2);border-radius:6px;padding:.16rem .4rem;flex-shrink:0;margin-top:2px}
+
+/* Vote buttons — 3 options */
 .vbtns{display:flex;gap:.5rem;margin-bottom:.95rem}
-.vbtn{flex:1;padding:.52rem;border-radius:8px;border:1.5px solid transparent;font-family:var(--fh);font-size:.8rem;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:all .15s}
+.vbtn{flex:1;padding:.52rem .3rem;border-radius:8px;border:1.5px solid transparent;font-family:var(--fh);font-size:.78rem;font-weight:700;cursor:pointer;letter-spacing:.03em;transition:all .15s;text-align:center;line-height:1.2}
 .vbtn.yb{background:rgba(255,110,180,.08);border-color:rgba(255,110,180,.3);color:#ff6eb4}
 .vbtn.yb:hover{background:rgba(255,110,180,.18);border-color:#ff6eb4}
 .vbtn.yb.voted{background:#ff6eb4;color:#1a0810;border-color:#ff6eb4}
 .vbtn.nb{background:rgba(139,26,58,.12);border-color:rgba(139,26,58,.4);color:#e05080}
 .vbtn.nb:hover{background:rgba(139,26,58,.22);border-color:#c0395e}
 .vbtn.nb.voted{background:#8b1a3a;color:#fce8f0;border-color:#8b1a3a}
+.vbtn.neub{background:rgba(176,96,144,.08);border-color:rgba(176,96,144,.3);color:#b06090}
+.vbtn.neub:hover{background:rgba(176,96,144,.18);border-color:#b06090}
+.vbtn.neub.voted{background:#6b3050;color:#fce8f0;border-color:#6b3050}
+
+/* Bar chart */
 .bar-area{display:flex;flex-direction:column;gap:.4rem}
 .brow{display:flex;align-items:center;gap:.5rem;font-size:.74rem;font-weight:600}
-.blbl{width:30px;text-align:right;flex-shrink:0}
-.blbl.y{color:#ff6eb4}.blbl.n{color:#c0395e}
+.blbl{width:38px;text-align:right;flex-shrink:0;font-size:.68rem}
+.blbl.y{color:#ff6eb4}.blbl.n{color:#c0395e}.blbl.neu{color:#b06090}
 .btrack{flex:1;height:10px;background:var(--surface2);border-radius:100px;overflow:hidden}
 .bfill{height:100%;border-radius:100px;transition:width .5s cubic-bezier(.4,0,.2,1)}
 .bfill.y{background:linear-gradient(90deg,#c0176a,#ff6eb4)}
 .bfill.n{background:linear-gradient(90deg,#4a0a1e,#8b1a3a)}
+.bfill.neu{background:linear-gradient(90deg,#4a1830,#b06090)}
 .bcnt{width:26px;font-size:.7rem;color:var(--muted);flex-shrink:0}
 .qtot{font-size:.68rem;color:var(--muted);margin-top:.1rem}
 
-/* PDF OVERLAY */
-#pdf-ov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(11,13,19,.88);backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:1.1rem}
+/* ── PDF OVERLAY ── */
+#pdf-ov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(26,8,16,.9);backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column;gap:1.1rem}
 #pdf-ov.show{display:flex}
-.pdf-spin{width:46px;height:46px;border:3px solid var(--border2);border-top-color:var(--accent3);border-radius:50%;animation:spin .85s linear infinite}
+.pdf-spin{width:46px;height:46px;border:3px solid var(--border2);border-top-color:#ff6eb4;border-radius:50%;animation:spin .85s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .pdf-msg{font-family:var(--fh);font-size:.97rem;font-weight:600}
 
-/* TOAST */
+/* ── TOAST ── */
 #toast{position:fixed;bottom:1.7rem;right:1.7rem;z-index:9000;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:.65rem 1.1rem;font-size:.83rem;opacity:0;transform:translateY(6px);transition:opacity .25s,transform .25s;pointer-events:none}
 #toast.show{opacity:1;transform:translateY(0)}
 
@@ -199,7 +193,7 @@ input[type=text]:focus{border-color:var(--accent)}
 <div id="login-screen">
   <div class="login-card">
     <div class="logo">CARE<span>tech</span></div>
-    <p class="login-sub">inclusive technology data</p>
+    <p class="login-sub">Survey to gather inclusive data for caring technology</p>
     <label class="field-label" for="uname">Your display name</label>
     <input type="text" id="uname" placeholder="e.g. Alex, Team B, Anonymous…" maxlength="30" autocomplete="off">
     <button class="btn-primary" onclick="enterApp()">Join Survey →</button>
@@ -209,7 +203,7 @@ input[type=text]:focus{border-color:var(--accent)}
 <!-- APP -->
 <div id="app">
   <header class="app-header">
-    <div class="header-logo">Live<span>Pulse</span></div>
+    <div class="header-logo">CARE<span>tech</span></div>
     <div class="live-pill"><div class="live-dot"></div>Live</div>
     <button class="btn-pdf" id="pdf-btn" onclick="exportPDF()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -226,195 +220,132 @@ input[type=text]:focus{border-color:var(--accent)}
   </div>
 </div>
 
-<div id="pdf-ov">
-  <div class="pdf-spin"></div>
-  <div class="pdf-msg" id="pdf-msg">Building PDF…</div>
-</div>
+<div id="pdf-ov"><div class="pdf-spin"></div><div class="pdf-msg" id="pdf-msg">Building PDF…</div></div>
 <div id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-//  SURVEY DATA  —  10 themes × 10 questions each
+//  SURVEY DATA
+//  Each question can be either:
+//    "Question text as a plain string"          ← no image
+//    { text: "Question text", image: "images/inventors01.png" }  ← with image
+//
+//  Image naming convention: images/THEMESLUG##.png
+//  e.g. images/inventors01.png, images/researchers02.png
 // ═══════════════════════════════════════════════════════════════
 const SURVEY = [
   {
-    theme:"Inventors", icon:"💡",
-    questions:[
-      "Do you exercise at least 3 times per week?",
-      "Do you get 7–9 hours of sleep most nights?",
-      "Do you drink at least 8 glasses of water daily?",
-      "Do you eat a nutritious breakfast every day?",
-      "Do you take regular screen breaks during work?",
-      "Do you attend an annual health check-up?",
-      "Do you practise mindfulness or meditation?",
-      "Do you limit alcohol to recommended guidelines?",
-      "Do you feel physically energetic most days?",
-      "Do you cook at home more often than eating out?"
+    theme: "Inventors", icon: "💡", slug: "inventors",
+    questions: [
+      { text: "Do you tinker and create ideas for this type of technology?", image: "images/inventors01.png" },
+      { text: "Do you have ideas that get past the idea phase for this type of technology?", image: "images/inventors02.png" },
+      { text: "Can you afford to patent an idea for this technology if it costs $10,000 for the average patent?", image: "images/inventors03.png" },
+      { text: "Do you have a patent for this type of technology?", image: "images/inventors04.png" },
+      { text: "Have you invented a part of this technology?", image: "images/inventors05.png" },
+      { text: "Do you get to design ideas for this type of technology that might be produced and deployed?", image: "images/inventors06.png" }
     ]
   },
   {
-    theme:"Researchers", icon:"🔬",
-    questions:[
-      "Do you use AI tools in your daily work?",
-      "Do you have a password manager set up?",
-      "Do you back up important data regularly?",
-      "Do you use two-factor authentication?",
-      "Do you read tech news at least weekly?",
-      "Do you know how to write or read basic code?",
-      "Do you use a VPN for online privacy?",
-      "Do you prefer dark mode over light mode?",
-      "Do you own a smart home device?",
-      "Do you keep social media under 1 hour per day?"
+    theme: "Researchers", icon: "🔬", slug: "researchers",
+    questions: [
+      { text: "Do you have access to research money for this area of technology?", image: "images/researchers01.png" },
+      { text: "Do you have access to equipment to research this area of technology?", image: "images/researchers02.png" },
+      { text: "Do you have access to space to research this area of technology?", image: "images/researchers03.png" },
+      { text: "Do you conduct research on this type of technology?", image: "images/researchers04.png" },
+      { text: "Do you have access to other people's research about this technology?", image: "images/researchers05.png" }
     ]
   },
   {
-    theme:"Designers", icon:"✏️",
-    questions:[
-      "Do you recycle regularly and correctly?",
-      "Do you use reusable bags when shopping?",
-      "Do you actively minimise single-use plastics?",
-      "Do you use public transport or cycle to work?",
-      "Do you compost food waste at home?",
-      "Do you buy locally produced food when possible?",
-      "Do you use a renewable energy tariff at home?",
-      "Do you offset your carbon footprint?",
-      "Do you follow a plant-based or reduced-meat diet?",
-      "Do you regularly buy secondhand clothing?"
+    theme: "Designers", icon: "✏️", slug: "designers",
+    questions: [
+      { text: "Do you get to design ideas for this type of technology?", image: "images/designers01.png" },
+      { text: "Do you have the computer programs to design ideas for this type of technology?", image: "images/designers02.png" },
+      { text: "Do you have a computer that can run computer programs to design ideas for this type of technology?", image: "images/designers03.png" },
+      { text: "Do your design ideas for this type of technology get developed and produced?", image: "images/designers04.png" },
+      { text: "Do your design ideas for this type of technology get patented?", image: "images/designers05.png" }
     ]
   },
   {
-    theme:"Manufacturers", icon:"🏭",
-    questions:[
-      "Do you stick to a monthly budget?",
-      "Do you save at least 10% of your income?",
-      "Do you have an emergency fund covering 3–6 months?",
-      "Do you invest in stocks, funds, or property?",
-      "Do you review your bank statements monthly?",
-      "Do you have a retirement savings plan?",
-      "Do you have life or income protection insurance?",
-      "Do you track your net worth at least once a year?",
-      "Do you generally avoid impulse purchases?",
-      "Do you have more than one source of income?"
+    theme: "Manufacturers", icon: "🏭", slug: "manufacturers",
+    questions: [
+      { text: "Do you manufacture this type of technology?", image: "images/manufacturers01.png" },
+      { text: "If you manufacture this type of technology, are your working conditions safe?", image: "images/manufacturers02.png" },
+      { text: "If you manufacture this type of technology, do you feel that your pay is fair?", image: "images/manufacturers03.png" },
+      { text: "If you manufacture this type of technology, do you find your working conditions to be supportive?", image: "images/manufacturers04.png" },
+      { text: "Are you in any way a part of manufacturing this technology?", image: "images/manufacturers05.png" }
     ]
   },
   {
-    theme:"Data Annotators & Trainers", icon:"🤖",
-    questions:[
-      "Do you feel loved and valued by those close to you?",
-      "Do you communicate openly when conflicts arise?",
-      "Do you spend quality time with loved ones weekly?",
-      "Do you apologise sincerely when you are wrong?",
-      "Do you listen more than you speak in conversations?",
-      "Do you regularly express gratitude to people close to you?",
-      "Do you set and maintain healthy personal boundaries?",
-      "Do you meet friends in person at least weekly?",
-      "Do you feel your emotional needs are being met?",
-      "Do you forgive others without holding long grudges?"
+    theme: "Users", icon: "👤", slug: "users",
+    questions: [
+      { text: "Do you have access to this technology where you live?", image: "images/users01.png" },
+      { text: "Can you afford this technology as much as you need it?", image: "images/users02.png" },
+      { text: "Do you have access to service of this technology if it breaks?", image: "images/users03.png" },
+      { text: "Are your needs met by this technology?", image: "images/users04.png" },
+      { text: "Is this technology easy for you to use?", image: "images/users05.png" },
+      { text: "Is this technology understandable to you, given your language?", image: "images/users06.png" },
+      { text: "Is this technology the right size for you?", image: "images/users07.png" },
+      { text: "Does this technology work most of the time for you when you use it?", image: "images/users08.png" },
+      { text: "Does this technology fit into your culture?", image: "images/users09.png" },
+      { text: "Does this technology fit into your everyday life?", image: "images/users10.png" }
     ]
   },
   {
-    theme:"Advertisers", icon:"📣",
-    questions:[
-      "Do you read books for at least 30 minutes weekly?",
-      "Do you take online courses or attend workshops?",
-      "Do you have a written set of personal goals?",
-      "Do you journal or reflect on your progress regularly?",
-      "Do you actively seek feedback from others?",
-      "Do you deliberately learn something new every week?",
-      "Do you have a mentor or coach in your life?",
-      "Do you listen to educational or informative podcasts?",
-      "Do you attend conferences or events in your field?",
-      "Do you regularly challenge your own beliefs?"
+    theme: "News Images", icon: "📰", slug: "newsimages",
+    questions: [
+      { text: "Is the person pictured in the image someone other than a white man?", image: "images/newsimages01.png" },
+      { text: "Is the person pictured in the image designing the technology?", image: "images/newsimages02.png" },
+      { text: "Is the person pictured in the image working with the technology?", image: "images/newsimages03.png" },
+      { text: "Is the person pictured in the image doing work that could be considered paid work outside the home?", image: "images/newsimages04.png" },
+      { text: "Is the person pictured in the image looking competent with the technology?", image: "images/newsimages05.png" },
+      { text: "Is the person pictured in the image looking at the technology instead of the camera?", image: "images/newsimages06.png" },
+      { text: "Is this true: The person in the image is not smiling at the camera?", image: "images/newsimages07.png" },
+      { text: "Is this true: The person in the image does not look objectified (like they are presenting the technology instead of working with it)?", image: "images/newsimages08.png" },
+      { text: "Is this true: The person in the image looks like they are working with the technology instead of just standing by it?", image: "images/newsimages09.png" }
     ]
   },
   {
-    theme:"Marketers", icon:"📊",
-    questions:[
-      "Do you feel satisfied with your current job or role?",
-      "Do you use a task or project management system?",
-      "Do you maintain clear boundaries between work and life?",
-      "Do you take your full lunch break most days?",
-      "Do you feel your skills are being properly utilised?",
-      "Do you feel recognised for your contributions at work?",
-      "Do you have a dedicated and organised workspace?",
-      "Do you tackle your most important task first each day?",
-      "Do you follow a consistent morning routine?",
-      "Do you avoid checking work emails outside of hours?"
+    theme: "Advertising & Marketing Images", icon: "📢", slug: "advertising",
+    questions: [
+      { text: "Does the image show at least one person other than a white man using the technology?", image: "images/advertising01.png" },
+      { text: "Does the image show at least one person other than a white man designing the technology?", image: "images/advertising02.png" },
+      { text: "If there is a person other than a white man in the ad, is this person not objectified or sexualized? (If they are objectified or sexualized, answer No)", image: "images/advertising03.png" }
     ]
   },
   {
-    theme:"Sellers", icon:"🛒",
-    questions:[
-      "Do you have an active creative hobby?",
-      "Do you create something new at least once a week?",
-      "Do you visit museums, galleries or live events?",
-      "Do you listen to music intentionally (not just background)?",
-      "Do you enjoy writing fiction, poetry or journaling?",
-      "Do you play a musical instrument?",
-      "Do you take photographs purely for pleasure?",
-      "Do you sketch, doodle or draw regularly?",
-      "Do you read fiction or watch films for creative inspiration?",
-      "Do you share your creative work with others publicly?"
+    theme: "Company Ownership", icon: "🏢", slug: "ownership",
+    questions: [
+      { text: "Do you own a company that makes or sells this technology?", image: "images/ownership01.png" },
+      { text: "Do you feel that the person who owns this company reflects your interests?", image: "images/ownership02.png" },
+      { text: "Do you feel that the person who owns this company reflects your needs?", image: "images/ownership03.png" }
     ]
   },
   {
-    theme:"Media Creators", icon:"🎬",
-    questions:[
-      "Have you visited a new country in the past 12 months?",
-      "Do you travel for leisure at least once a year?",
-      "Do you enjoy solo travel?",
-      "Do you research destinations thoroughly before visiting?",
-      "Do you sometimes travel without a fixed itinerary?",
-      "Do you seek out and try local food when travelling?",
-      "Do you maintain an active travel wish list?",
-      "Do you prefer adventure travel over relaxing beach holidays?",
-      "Do you speak more than one language conversationally?",
-      "Do you always travel with appropriate travel insurance?"
-    ]
-  },
-  {
-    theme:"Disposers", icon:"🗑️",
-    questions:[
-      "Do you feel generally optimistic about your future?",
-      "Do you manage stress effectively most of the time?",
-      "Do you take time for yourself without feeling guilty?",
-      "Do you feel comfortable asking for help when needed?",
-      "Do you practise gratitude regularly?",
-      "Do you feel a strong sense of purpose in your daily life?",
-      "Do you avoid dwelling on past mistakes?",
-      "Do you feel mentally resilient when facing setbacks?",
-      "Do you have healthy coping strategies for anxiety?",
-      "Do you prioritise your mental health as much as physical health?"
-    ]
-  },
-{
-    theme:"Environmental Impact", icon:"🌍",
-    questions:[
-      "Do you feel generally optimistic about your future?",
-      "Do you manage stress effectively most of the time?",
-      "Do you take time for yourself without feeling guilty?",
-      "Do you feel comfortable asking for help when needed?",
-      "Do you practise gratitude regularly?",
-      "Do you feel a strong sense of purpose in your daily life?",
-      "Do you avoid dwelling on past mistakes?",
-      "Do you feel mentally resilient when facing setbacks?",
-      "Do you have healthy coping strategies for anxiety?",
-      "Do you prioritise your mental health as much as physical health?"
+    theme: "Environmental Impact", icon: "🌍", slug: "environmental",
+    questions: [
+      { text: "Do you have the ability to influence the environmental impact of this technology?", image: "images/environmental01.png" },
+      { text: "Do you live far from a manufacturing plant that makes this technology?", image: "images/environmental02.png" },
+      { text: "Do you believe that the company making this technology makes decisions with the environmental impact of the technology in mind?", image: "images/environmental03.png" }
     ]
   }
 ];
+
+// ── Helper: get question text from string or object ──────────
+function qText(q){ return typeof q === 'string' ? q : q.text; }
+function qImage(q){ return (typeof q === 'object' && q.image) ? q.image : null; }
 
 // ═══════════════════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════════════════
 let username = '';
 let currentView = 'theme-0';
+// votes now track yes / no / neutral
 let votes = {}, myVotes = {}, charts = {}, unsubs = [];
 let db, fsSetDoc, fsDoc, fsOnSnapshot, isDemo = false;
 
 SURVEY.forEach((_,ti)=>{
   votes[ti]={};myVotes[ti]={};
-  SURVEY[ti].questions.forEach((_,qi)=>{ votes[ti][qi]={yes:0,no:0}; });
+  SURVEY[ti].questions.forEach((_,qi)=>{ votes[ti][qi]={yes:0,no:0,neutral:0}; });
 });
 
 window.addEventListener('firebase-ready',()=>{
@@ -481,7 +412,12 @@ function subscribeAll(){
   unsubs.forEach(u=>u());unsubs=[];
   SURVEY.forEach((_,ti)=>SURVEY[ti].questions.forEach((_,qi)=>{
     const u=fsOnSnapshot(fsDoc(db,'survey_responses',`t${ti}_q${qi}`),snap=>{
-      votes[ti][qi]=snap.exists()?{yes:snap.data().yes||0,no:snap.data().no||0}:{yes:0,no:0};
+      if(snap.exists()){
+        const d=snap.data();
+        votes[ti][qi]={yes:d.yes||0,no:d.no||0,neutral:d.neutral||0};
+      } else {
+        votes[ti][qi]={yes:0,no:0,neutral:0};
+      }
       syncUI(ti,qi);
     });
     unsubs.push(u);
@@ -509,7 +445,7 @@ async function castVote(ti,qi,choice){
   if(isDemo){showToast('Demo mode — add Firebase config to sync');return;}
   try{
     await fsSetDoc(fsDoc(db,'survey_responses',`t${ti}_q${qi}`),
-      {[`users.${sk(username)}`]:choice,yes:v.yes,no:v.no},{merge:true});
+      {[`users.${sk(username)}`]:choice,yes:v.yes,no:v.no,neutral:v.neutral},{merge:true});
   }catch(e){showToast('Sync error');console.error(e);}
 }
 
@@ -532,22 +468,39 @@ function showTheme(idx){
   t.questions.forEach((_,qi)=>{
     const c=document.createElement('div');
     c.className='qcard';c.id=`qc-${idx}-${qi}`;
-    c.innerHTML=cardHTML(idx,qi);g.appendChild(c);updateBar(idx,qi);
+    c.innerHTML=cardHTML(idx,qi);
+    g.appendChild(c);
+    updateBar(idx,qi);
   });
 }
 
 function cardHTML(ti,qi){
-  const q=SURVEY[ti].questions[qi],mv=myVotes[ti][qi],v=votes[ti][qi];
-  const tot=v.yes+v.no,yp=tot?Math.round(v.yes/tot*100):0,np=tot?Math.round(v.no/tot*100):0;
+  const entry=SURVEY[ti].questions[qi];
+  const q=qText(entry);
+  const img=qImage(entry);
+  const mv=myVotes[ti][qi];
+  const v=votes[ti][qi];
+  const tot=v.yes+v.no+v.neutral;
+  const yp=tot?Math.round(v.yes/tot*100):0;
+  const np=tot?Math.round(v.no/tot*100):0;
+  const nep=tot?Math.round(v.neutral/tot*100):0;
+
+  const imgHTML=img
+    ? `<img src="${img}" alt="Question image" class="qcard-img" onerror="this.style.display='none'">`
+    : '';
+
   return `
+    ${imgHTML}
     <div class="qcard-top"><div class="qtext">${q}</div><div class="qnum">Q${qi+1}</div></div>
     <div class="vbtns">
       <button class="vbtn yb${mv==='yes'?' voted':''}" onclick="castVote(${ti},${qi},'yes')">✓ Yes</button>
-      <button class="vbtn nb${mv==='no' ?' voted':''}" onclick="castVote(${ti},${qi},'no')">✗ No</button>
+      <button class="vbtn nb${mv==='no'?' voted':''}" onclick="castVote(${ti},${qi},'no')">✗ No</button>
+      <button class="vbtn neub${mv==='neutral'?' voted':''}" onclick="castVote(${ti},${qi},'neutral')">— N/A</button>
     </div>
     <div class="bar-area">
       <div class="brow"><div class="blbl y">YES</div><div class="btrack"><div class="bfill y" id="by-${ti}-${qi}" style="width:${yp}%"></div></div><div class="bcnt" id="cy-${ti}-${qi}">${v.yes}</div></div>
       <div class="brow"><div class="blbl n">NO</div><div class="btrack"><div class="bfill n" id="bn-${ti}-${qi}" style="width:${np}%"></div></div><div class="bcnt" id="cn-${ti}-${qi}">${v.no}</div></div>
+      <div class="brow"><div class="blbl neu">N/A</div><div class="btrack"><div class="bfill neu" id="bne-${ti}-${qi}" style="width:${nep}%"></div></div><div class="bcnt" id="cne-${ti}-${qi}">${v.neutral}</div></div>
       <div class="qtot" id="qt-${ti}-${qi}">${tot===1?'1 response':tot+' responses'}</div>
     </div>`;
 }
@@ -557,20 +510,23 @@ function refreshBtns(ti,qi){
   const mv=myVotes[ti][qi];
   card.querySelectorAll('.vbtn').forEach(b=>{
     b.classList.remove('voted');
-    if((b.classList.contains('yb')&&mv==='yes')||(b.classList.contains('nb')&&mv==='no'))b.classList.add('voted');
+    if((b.classList.contains('yb')&&mv==='yes')||
+       (b.classList.contains('nb')&&mv==='no')||
+       (b.classList.contains('neub')&&mv==='neutral'))b.classList.add('voted');
   });
 }
 
 function updateBar(ti,qi){
-  const v=votes[ti][qi],tot=v.yes+v.no;
-  const yp=tot?Math.round(v.yes/tot*100):0,np=tot?Math.round(v.no/tot*100):0;
-  const by=document.getElementById(`by-${ti}-${qi}`),bn=document.getElementById(`bn-${ti}-${qi}`);
-  const cy=document.getElementById(`cy-${ti}-${qi}`),cn=document.getElementById(`cn-${ti}-${qi}`);
-  const qt=document.getElementById(`qt-${ti}-${qi}`);
-  if(!by)return;
-  by.style.width=yp+'%';bn.style.width=np+'%';
-  cy.textContent=v.yes;cn.textContent=v.no;
-  qt.textContent=tot===1?'1 response':tot+' responses';
+  const v=votes[ti][qi];
+  const tot=v.yes+v.no+v.neutral;
+  const yp=tot?Math.round(v.yes/tot*100):0;
+  const np=tot?Math.round(v.no/tot*100):0;
+  const nep=tot?Math.round(v.neutral/tot*100):0;
+  const set=(id,val)=>{const e=document.getElementById(id);if(e)e.style?e.style.width=val+'%':e.textContent=val;};
+  const setText=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val;};
+  set(`by-${ti}-${qi}`,yp);set(`bn-${ti}-${qi}`,np);set(`bne-${ti}-${qi}`,nep);
+  setText(`cy-${ti}-${qi}`,v.yes);setText(`cn-${ti}-${qi}`,v.no);setText(`cne-${ti}-${qi}`,v.neutral);
+  setText(`qt-${ti}-${qi}`,tot===1?'1 response':tot+' responses');
 }
 
 function updateSP(){
@@ -591,8 +547,8 @@ function showSummary(){
     <div class="pg-title">📊 Full Survey Summary</div>
     <div class="pg-sub">Live aggregate of all responses across ${SURVEY.length} themes and ${totalQ} questions</div>
     <div class="overall-card" id="oc">
-      <div class="oc-title">Overall Survey Results — All YES Responses</div>
-      <div class="oc-sub">Total YES and NO votes across every theme</div>
+      <div class="oc-title">Overall Survey Results</div>
+      <div class="oc-sub">Total YES, NO, and Neutral/N/A votes across every theme</div>
       <div class="oc-stats" id="oc-stats"></div>
       <div class="chart-h240"><canvas id="chart-overall"></canvas></div>
     </div>
@@ -601,7 +557,6 @@ function showSummary(){
   buildOverall();buildThemeSecs();
 }
 
-// ─ Overall grouped bar ──────────────────────────────────────
 function buildOverall(){
   renderOverallStats();
   const ctx=document.getElementById('chart-overall').getContext('2d');
@@ -610,17 +565,16 @@ function buildOverall(){
     data:{
       labels:SURVEY.map(t=>t.theme),
       datasets:[
-        {label:'YES',data:SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].yes,0)),
-          backgroundColor:'rgba(255,110,180,.72)',borderColor:'#ff6eb4',borderWidth:1.5,borderRadius:5},
-        {label:'NO', data:SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].no,0)),
-          backgroundColor:'rgba(139,26,58,.72)',borderColor:'#8b1a3a',borderWidth:1.5,borderRadius:5}
+        {label:'YES', data:SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].yes,0)),     backgroundColor:'rgba(255,110,180,.75)',borderColor:'#ff6eb4',borderWidth:1.5,borderRadius:4},
+        {label:'NO',  data:SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].no,0)),      backgroundColor:'rgba(139,26,58,.75)', borderColor:'#8b1a3a',borderWidth:1.5,borderRadius:4},
+        {label:'N/A', data:SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].neutral,0)), backgroundColor:'rgba(176,96,144,.65)',borderColor:'#b06090',borderWidth:1.5,borderRadius:4}
       ]
     },
     options:{
       responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:'#d48aaa',font:{family:"'DM Sans',sans-serif",size:12}}}},
       scales:{
-        x:{ticks:{color:'#a06080',font:{size:10},maxRotation:30},grid:{color:'rgba(255,110,180,.06)'}},
+        x:{ticks:{color:'#a06080',font:{size:10},maxRotation:35},grid:{color:'rgba(255,110,180,.06)'}},
         y:{ticks:{color:'#a06080',font:{size:11}},grid:{color:'rgba(255,110,180,.06)'},beginAtZero:true}
       }
     }
@@ -629,33 +583,37 @@ function buildOverall(){
 }
 
 function renderOverallStats(){
-  const {ty,tn,tt}=totals();
+  const{ty,tn,tne,tt}=totals();
   const el=document.getElementById('oc-stats');if(!el)return;
   el.innerHTML=`
     <div class="ostat"><div class="ostat-num y">${ty}</div><div class="ostat-lbl">Total YES</div></div>
     <div class="ostat"><div class="ostat-num n">${tn}</div><div class="ostat-lbl">Total NO</div></div>
+    <div class="ostat"><div class="ostat-num neu">${tne}</div><div class="ostat-lbl">Neutral/N/A</div></div>
     <div class="ostat"><div class="ostat-num t">${tt}</div><div class="ostat-lbl">Total Responses</div></div>
     <div class="ostat"><div class="ostat-num r">${tt?Math.round(ty/tt*100):0}%</div><div class="ostat-lbl">YES Rate</div></div>
-  `;}
+  `;
+}
 
 function syncOverall(){
   const ch=charts['overall'];if(!ch)return;
   ch.data.datasets[0].data=SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].yes,0));
   ch.data.datasets[1].data=SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].no,0));
+  ch.data.datasets[2].data=SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].neutral,0));
   ch.update('none');renderOverallStats();
 }
 
 function totals(){
-  let ty=0,tn=0;
-  SURVEY.forEach((_,ti)=>SURVEY[ti].questions.forEach((_,qi)=>{ty+=votes[ti][qi].yes;tn+=votes[ti][qi].no;}));
-  return{ty,tn,tt:ty+tn};
+  let ty=0,tn=0,tne=0;
+  SURVEY.forEach((_,ti)=>SURVEY[ti].questions.forEach((_,qi)=>{
+    ty+=votes[ti][qi].yes;tn+=votes[ti][qi].no;tne+=votes[ti][qi].neutral;
+  }));
+  return{ty,tn,tne,tt:ty+tn+tne};
 }
 
-// ─ Per-theme stacked bar ────────────────────────────────────
 function buildThemeSecs(){
   const cont=document.getElementById('theme-secs');cont.innerHTML='';
   SURVEY.forEach((t,ti)=>{
-    const tot=t.questions.reduce((s,_,qi)=>s+votes[ti][qi].yes+votes[ti][qi].no,0);
+    const tot=t.questions.reduce((s,_,qi)=>s+votes[ti][qi].yes+votes[ti][qi].no+votes[ti][qi].neutral,0);
     const sec=document.createElement('div');sec.className='tss';sec.id=`tss-${ti}`;
     sec.innerHTML=`
       <div class="tss-hd">
@@ -671,15 +629,16 @@ function buildThemeSecs(){
 
 function buildThemeChart(ti){
   const t=SURVEY[ti];
-  const tips=t.questions.map(q=>q.length>60?q.substring(0,57)+'…':q);
+  const tips=t.questions.map(q=>{ const txt=qText(q); return txt.length>60?txt.substring(0,57)+'…':txt; });
   const ctx=document.getElementById(`chart-t-${ti}`).getContext('2d');
   const ch=new Chart(ctx,{
     type:'bar',
     data:{
       labels:t.questions.map((_,i)=>`Q${i+1}`),
       datasets:[
-        {label:'YES',data:t.questions.map((_,qi)=>votes[ti][qi].yes),backgroundColor:'rgba(255,110,180,.75)',borderColor:'#ff6eb4',borderWidth:1,borderRadius:4,stack:'s'},
-        {label:'NO', data:t.questions.map((_,qi)=>votes[ti][qi].no), backgroundColor:'rgba(139,26,58,.75)',borderColor:'#8b1a3a',borderWidth:1,borderRadius:4,stack:'s'}
+        {label:'YES', data:t.questions.map((_,qi)=>votes[ti][qi].yes),     backgroundColor:'rgba(255,110,180,.75)',borderColor:'#ff6eb4',borderWidth:1,borderRadius:3,stack:'s'},
+        {label:'NO',  data:t.questions.map((_,qi)=>votes[ti][qi].no),      backgroundColor:'rgba(139,26,58,.75)', borderColor:'#8b1a3a',borderWidth:1,borderRadius:3,stack:'s'},
+        {label:'N/A', data:t.questions.map((_,qi)=>votes[ti][qi].neutral),  backgroundColor:'rgba(176,96,144,.65)',borderColor:'#b06090',borderWidth:1,borderRadius:3,stack:'s'}
       ]
     },
     options:{
@@ -704,8 +663,9 @@ function syncSummaryChart(ti){
   const ch=charts[`t${ti}`];if(!ch)return;
   ch.data.datasets[0].data=SURVEY[ti].questions.map((_,qi)=>votes[ti][qi].yes);
   ch.data.datasets[1].data=SURVEY[ti].questions.map((_,qi)=>votes[ti][qi].no);
+  ch.data.datasets[2].data=SURVEY[ti].questions.map((_,qi)=>votes[ti][qi].neutral);
   ch.update('none');
-  const tot=SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].yes+votes[ti][qi].no,0);
+  const tot=SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].yes+votes[ti][qi].no+votes[ti][qi].neutral,0);
   const badge=document.getElementById(`tss-tot-${ti}`);
   if(badge)badge.textContent=`${tot} response${tot!==1?'s':''}`;
 }
@@ -719,7 +679,7 @@ function demoBanner(){
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  PDF EXPORT  —  programmatic rendering, no screenshots
+//  PDF EXPORT — programmatic rendering
 // ═══════════════════════════════════════════════════════════════
 async function exportPDF(){
   const btn=document.getElementById('pdf-btn');
@@ -731,88 +691,93 @@ async function exportPDF(){
   const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const PW=210,PH=297,M=13,CW=PW-M*2;
 
-  const sf=(size,style='normal',r=226,g=232,b=240)=>{pdf.setFontSize(size);pdf.setFont('helvetica',style);pdf.setTextColor(r,g,b);};
+  const sf=(size,style='normal',r=252,g=232,b=240)=>{pdf.setFontSize(size);pdf.setFont('helvetica',style);pdf.setTextColor(r,g,b);};
   const fr=(x,y,w,h,rad,R,G,B)=>{pdf.setFillColor(R,G,B);pdf.roundedRect(x,y,w,h,rad,rad,'F');};
   const frsh=(x,y,w,h,R,G,B)=>{pdf.setFillColor(R,G,B);pdf.rect(x,y,w,h,'F');};
   const newPage=()=>{pdf.addPage();frsh(0,0,PW,PH,26,8,16);};
 
-  const drawBar=(x,y,w,h,yesV,noV)=>{
-    const tot=yesV+noV;
+  const drawBar3=(x,y,w,h,yesV,noV,neuV)=>{
+    const tot=yesV+noV+neuV;
     fr(x,y,w,h,1,60,20,40);
     if(tot>0){
-      const yw=w*(yesV/tot),nw=w*(noV/tot);
+      const yw=w*(yesV/tot),nw=w*(noV/tot),new2=w*(neuV/tot);
       if(yw>0)fr(x,y,yw,h,1,255,110,180);
       if(nw>0)fr(x+yw,y,nw,h,1,139,26,58);
+      if(new2>0)fr(x+yw+nw,y,new2,h,1,176,96,144);
     }
   };
 
-  // ── COVER PAGE ──────────────────────────────────────────────
+  // ── COVER ────────────────────────────────────────────────────
   msg.textContent='Building cover page…';
   frsh(0,0,PW,PH,26,8,16);
-  frsh(0,0,PW,4,255,110,180);// accent bar
-
+  frsh(0,0,PW,4,255,110,180);
   sf(34,'bold',252,232,240);pdf.text('LivePulse',M,62);
   sf(15,'normal',255,110,180);pdf.text('Real-Time Survey Report',M,75);
   sf(9,'normal',160,96,128);pdf.text(`Generated: ${new Date().toLocaleString()}`,M,86);
   pdf.text(`Respondent: ${username}`,M,93);
 
-  const{ty,tn,tt}=totals();
-  fr(M,108,CW,54,4,48,18,34);
+  const{ty,tn,tne,tt}=totals();
+  fr(M,108,CW,58,4,48,18,34);
   sf(8,'bold',160,96,128);
-  pdf.text('TOTAL RESPONSES',M+8,121);pdf.text('YES',M+58,121);pdf.text('NO',M+108,121);pdf.text('YES RATE',M+155,121);
-  sf(21,'bold',255,159,204);pdf.text(String(tt),M+8,135);
-  sf(21,'bold',255,110,180);pdf.text(String(ty),M+58,135);
-  sf(21,'bold',192,57,94);pdf.text(String(tn),M+108,135);
-  sf(21,'bold',255,179,217);pdf.text(`${tt?Math.round(ty/tt*100):0}%`,M+155,135);
-  sf(7,'normal',90,40,60);pdf.text(`${SURVEY.length} themes · ${SURVEY.reduce((a,t)=>a+t.questions.length,0)} questions`,M,170);
+  pdf.text('TOTAL',M+6,121);pdf.text('YES',M+46,121);pdf.text('NO',M+88,121);pdf.text('NEUTRAL/N/A',M+124,121);pdf.text('YES RATE',M+172,121);
+  sf(18,'bold',255,159,204);pdf.text(String(tt),M+6,135);
+  sf(18,'bold',255,110,180);pdf.text(String(ty),M+46,135);
+  sf(18,'bold',192,57,94);pdf.text(String(tn),M+88,135);
+  sf(18,'bold',176,96,144);pdf.text(String(tne),M+124,135);
+  sf(18,'bold',255,179,217);pdf.text(`${tt?Math.round(ty/tt*100):0}%`,M+172,135);
+  sf(7,'normal',90,40,60);pdf.text(`${SURVEY.length} themes · ${SURVEY.reduce((a,t)=>a+t.questions.length,0)} questions`,M,176);
 
-  // ── PAGE 2: OVERALL BAR CHART (drawn natively) ─────────────
+  // ── OVERALL CHART PAGE ───────────────────────────────────────
   msg.textContent='Building overall chart…';
   newPage();
   frsh(0,0,PW,4,255,110,180);
   sf(13,'bold',252,232,240);pdf.text('Overall Survey Results',M,18);
-  sf(8,'normal',160,96,128);pdf.text('YES and NO totals per theme',M,24);
+  sf(8,'normal',160,96,128);pdf.text('YES, NO, and Neutral/N/A totals per theme',M,24);
 
-  const maxBarH=95,chartX=M+22,chartW=CW-26,barW=chartW/SURVEY.length;
+  const maxBarH=90,chartX=M+20,chartW=CW-24;
+  const barSlotW=chartW/SURVEY.length;
   const yesData=SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].yes,0));
   const noData =SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].no,0));
-  const maxVal=Math.max(...yesData.map((y,i)=>y+noData[i]),1);
+  const neuData=SURVEY.map((_,ti)=>SURVEY[ti].questions.reduce((s,_,qi)=>s+votes[ti][qi].neutral,0));
+  const maxVal=Math.max(...yesData.map((y,i)=>y+noData[i]+neuData[i]),1);
   const chartY=32;
 
-  // axis
-  pdf.setDrawColor(37,43,61);pdf.setLineWidth(.3);
+  pdf.setDrawColor(90,31,58);pdf.setLineWidth(.3);
   pdf.line(chartX,chartY,chartX,chartY+maxBarH);
   pdf.line(chartX,chartY+maxBarH,chartX+chartW,chartY+maxBarH);
 
   SURVEY.forEach((t,i)=>{
-    const bx=chartX+i*barW+barW*.08,bw=barW*.84;
-    const totalH=(yesData[i]+noData[i])/maxVal*maxBarH;
-    const yH=yesData[i]/maxVal*maxBarH,nH=noData[i]/maxVal*maxBarH;
-    if(yH>0)fr(bx,chartY+maxBarH-totalH,bw,yH,.8,255,110,180);
-    if(nH>0)fr(bx,chartY+maxBarH-nH,bw,nH,.8,139,26,58);
-    sf(6.5,'normal',100,116,139);
-    const lbl=t.theme.length>10?t.theme.substring(0,9)+'…':t.theme;
-    pdf.text(lbl,bx+bw/2,chartY+maxBarH+5,{align:'center',maxWidth:barW*.9});
-    sf(6.5,'bold',226,232,240);
-    if(yesData[i]+noData[i]>0)pdf.text(String(yesData[i]+noData[i]),bx+bw/2,chartY+maxBarH-totalH-1,{align:'center'});
+    const groupW=barSlotW*.8,bw=groupW/3,bx=chartX+i*barSlotW+barSlotW*.1;
+    const yH=yesData[i]/maxVal*maxBarH;
+    const nH=noData[i]/maxVal*maxBarH;
+    const neH=neuData[i]/maxVal*maxBarH;
+    if(yH>0)fr(bx,chartY+maxBarH-yH,bw,yH,.6,255,110,180);
+    if(nH>0)fr(bx+bw,chartY+maxBarH-nH,bw,nH,.6,139,26,58);
+    if(neH>0)fr(bx+bw*2,chartY+maxBarH-neH,bw,neH,.6,176,96,144);
+    sf(5.5,'normal',160,96,128);
+    const lbl=t.theme.length>11?t.theme.substring(0,10)+'…':t.theme;
+    pdf.text(lbl,chartX+i*barSlotW+barSlotW/2,chartY+maxBarH+5,{align:'center',maxWidth:barSlotW*.92});
   });
 
   // legend
-  fr(M,chartY+maxBarH+22,8,4,1,255,110,180);sf(8,'normal',255,110,180);pdf.text('YES',M+10,chartY+maxBarH+26);
-  fr(M+24,chartY+maxBarH+22,8,4,1,139,26,58);sf(8,'normal',192,57,94);pdf.text('NO',M+34,chartY+maxBarH+26);
+  const ly=chartY+maxBarH+20;
+  fr(M,ly,7,3.5,1,255,110,180);sf(7.5,'normal',255,110,180);pdf.text('YES',M+9,ly+3);
+  fr(M+25,ly,7,3.5,1,139,26,58);sf(7.5,'normal',192,57,94);pdf.text('NO',M+34,ly+3);
+  fr(M+50,ly,7,3.5,1,176,96,144);sf(7.5,'normal',176,96,144);pdf.text('Neutral/N/A',M+59,ly+3);
 
-  // overall stats boxes
-  const statsY=chartY+maxBarH+36;
+  // stats boxes
+  const statsY=chartY+maxBarH+32;
   [{v:ty,lbl:'Total YES',R:255,G:110,B:180},{v:tn,lbl:'Total NO',R:192,G:57,B:94},
-   {v:tt,lbl:'Responses',R:255,G:159,B:204},{v:`${tt?Math.round(ty/tt*100):0}%`,lbl:'YES Rate',R:255,G:179,B:217}
+   {v:tne,lbl:'Neutral/N/A',R:176,G:96,B:144},{v:tt,lbl:'Responses',R:255,G:159,B:204},
+   {v:`${tt?Math.round(ty/tt*100):0}%`,lbl:'YES Rate',R:255,G:179,B:217}
   ].forEach((s,i)=>{
-    const bx=M+i*(CW/4)+1,bw=CW/4-2;
-    fr(bx,statsY,bw,22,3,48,18,34);
-    sf(15,'bold',s.R,s.G,s.B);pdf.text(String(s.v),bx+bw/2,statsY+12,{align:'center'});
-    sf(7,'normal',160,96,128);pdf.text(s.lbl,bx+bw/2,statsY+19,{align:'center'});
+    const cols=5,bw2=CW/cols-1.5,bx=M+i*(CW/cols)+.75;
+    fr(bx,statsY,bw2,21,3,48,18,34);
+    sf(13,'bold',s.R,s.G,s.B);pdf.text(String(s.v),bx+bw2/2,statsY+11,{align:'center'});
+    sf(6.5,'normal',160,96,128);pdf.text(s.lbl,bx+bw2/2,statsY+18,{align:'center'});
   });
 
-  // ── PAGES PER THEME ─────────────────────────────────────────
+  // ── ONE PAGE PER THEME ───────────────────────────────────────
   for(let ti=0;ti<SURVEY.length;ti++){
     msg.textContent=`Building theme ${ti+1} of ${SURVEY.length}: ${SURVEY[ti].theme}…`;
     const t=SURVEY[ti];
@@ -821,61 +786,60 @@ async function exportPDF(){
 
     sf(13,'bold',252,232,240);pdf.text(`${t.icon}  ${t.theme}`,M,18);
     sf(8,'normal',160,96,128);
-    const thTot=t.questions.reduce((s,_,qi)=>s+votes[ti][qi].yes+votes[ti][qi].no,0);
+    const thTot=t.questions.reduce((s,_,qi)=>s+votes[ti][qi].yes+votes[ti][qi].no+votes[ti][qi].neutral,0);
     pdf.text(`${t.questions.length} questions · ${thTot} total responses`,M,25);
 
-    // Theme-level stacked bar chart (Q1–Q10)
-    const thChartY=30,thChartH=50,thChartX=M+16,thChartW=CW-18;
-    const thBarW=thChartW/t.questions.length;
-    const thMax=Math.max(...t.questions.map((_,qi)=>votes[ti][qi].yes+votes[ti][qi].no),1);
-    pdf.setDrawColor(37,43,61);pdf.setLineWidth(.25);
+    // Theme mini-chart
+    const thChartY=30,thChartH=46,thChartX=M+14,thChartW=CW-16;
+    const thBarSlotW=thChartW/t.questions.length;
+    const thMax=Math.max(...t.questions.map((_,qi)=>votes[ti][qi].yes+votes[ti][qi].no+votes[ti][qi].neutral),1);
+    pdf.setDrawColor(90,31,58);pdf.setLineWidth(.22);
     pdf.line(thChartX,thChartY,thChartX,thChartY+thChartH);
     pdf.line(thChartX,thChartY+thChartH,thChartX+thChartW,thChartY+thChartH);
 
     t.questions.forEach((_,qi)=>{
-      const v=votes[ti][qi],bx=thChartX+qi*thBarW+thBarW*.06,bw=thBarW*.88;
-      const tot=v.yes+v.no,totH=tot/thMax*thChartH,yH=v.yes/thMax*thChartH,nH=v.no/thMax*thChartH;
-      if(yH>0)fr(bx,thChartY+thChartH-totH,bw,yH,.6,255,110,180);
-      if(nH>0)fr(bx,thChartY+thChartH-nH,bw,nH,.6,139,26,58);
-      sf(6,'normal',100,116,139);pdf.text(`Q${qi+1}`,bx+bw/2,thChartY+thChartH+4,{align:'center'});
+      const v=votes[ti][qi];
+      const groupW=thBarSlotW*.78,bw=groupW/3;
+      const bx=thChartX+qi*thBarSlotW+thBarSlotW*.11;
+      const yH=v.yes/thMax*thChartH,nH=v.no/thMax*thChartH,neH=v.neutral/thMax*thChartH;
+      if(yH>0)fr(bx,thChartY+thChartH-yH,bw,yH,.5,255,110,180);
+      if(nH>0)fr(bx+bw,thChartY+thChartH-nH,bw,nH,.5,139,26,58);
+      if(neH>0)fr(bx+bw*2,thChartY+thChartH-neH,bw,neH,.5,176,96,144);
+      sf(5.5,'normal',160,96,128);pdf.text(`Q${qi+1}`,thChartX+qi*thBarSlotW+thBarSlotW/2,thChartY+thChartH+3.5,{align:'center'});
     });
 
-    // Per-question detail list
-    let y=thChartY+thChartH+14;
+    // Per-question list
+    let y=thChartY+thChartH+11;
     sf(7.5,'bold',255,110,180);pdf.text('QUESTION-BY-QUESTION RESULTS',M,y);y+=5;
 
     for(let qi=0;qi<t.questions.length;qi++){
-      const v=votes[ti][qi],tot=v.yes+v.no;
-      const cardH=18;
-      if(y+cardH>PH-10){newPage();frsh(0,0,PW,4,94,234,212);y=14;}
+      const v=votes[ti][qi],tot=v.yes+v.no+v.neutral;
+      const cardH=19;
+      if(y+cardH>PH-10){newPage();frsh(0,0,PW,4,255,110,180);y=14;}
 
       fr(M,y,CW,cardH,2.5,48,18,34);
+      fr(M+2.5,y+3,9,13,1.5,90,30,60);
+      sf(7,'bold',255,110,180);pdf.text(`Q${qi+1}`,M+7,y+10.5,{align:'center'});
 
-      // Q number badge
-      fr(M+2.5,y+3,9,12,1.5,90,30,60);
-      sf(7,'bold',255,110,180);pdf.text(`Q${qi+1}`,M+7,y+10,{align:'center'});
-
-      // Question text
       sf(7.5,'normal',230,180,210);
-      const qtxt=t.questions[qi].length>74?t.questions[qi].substring(0,71)+'…':t.questions[qi];
-      pdf.text(qtxt,M+14,y+6.5);
+      const qtxt=qText(t.questions[qi]);
+      const qtxtShort=qtxt.length>72?qtxt.substring(0,69)+'…':qtxt;
+      pdf.text(qtxtShort,M+14,y+7);
 
-      // Bar
-      const barX=M+14,barY=y+10.5,barW2=CW-42,barH2=3.5;
-      drawBar(barX,barY,barW2,barH2,v.yes,v.no);
+      const barX=M+14,barY2=y+11.5,barW3=CW-44,barH3=3.5;
+      drawBar3(barX,barY2,barW3,barH3,v.yes,v.no,v.neutral);
 
-      // Counts
-      sf(6.5,'bold',255,110,180);pdf.text(`✓${v.yes}`,M+CW-19,y+6.5);
-      sf(6.5,'bold',192,57,94);pdf.text(`✗${v.no}`,M+CW-9.5,y+6.5);
-      sf(6,'normal',160,96,128);
+      sf(6,'bold',255,110,180);pdf.text(`Y:${v.yes}`,M+CW-26,y+7);
+      sf(6,'bold',192,57,94);pdf.text(`N:${v.no}`,M+CW-17,y+7);
+      sf(6,'bold',176,96,144);pdf.text(`?:${v.neutral}`,M+CW-8,y+7);
+      sf(5.5,'normal',160,96,128);
       const pct=tot?`${Math.round(v.yes/tot*100)}% yes`:'no votes';
-      pdf.text(pct,M+CW-19,y+13);
+      pdf.text(pct,M+CW-26,y+14);
 
       y+=cardH+2.5;
     }
   }
 
-  // ── DONE ──────────────────────────────────────────────────
   msg.textContent='Saving…';
   pdf.save(`livepulse-report-${new Date().toISOString().slice(0,10)}.pdf`);
   document.getElementById('pdf-ov').classList.remove('show');
