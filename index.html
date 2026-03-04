@@ -385,7 +385,7 @@ function buildSidebar(){
   sb.innerHTML=`
     <div class="sidebar-label">Overview</div>
     <button class="sbtn" id="sum-btn" onclick="showSummary()">
-      <span class="si">📊</span><span class="sn">Full Summary</span>
+      <span class="si">📊</span><span class="sn">Results</span>
     </button>
     <div class="sidebar-label" style="margin-top:.7rem">Themes</div>
   `;
@@ -544,11 +544,11 @@ function showSummary(){
   const totalQ=SURVEY.reduce((a,t)=>a+t.questions.length,0);
   document.getElementById('main-content').innerHTML=`
     ${demoBanner()}
-    <div class="pg-title">📊 Full Survey Summary</div>
+    <div class="pg-title">📊 Results</div>
     <div class="pg-sub">Live aggregate of all responses across ${SURVEY.length} themes and ${totalQ} questions</div>
     <div class="overall-card" id="oc">
       <div class="oc-title">Overall Survey Results</div>
-      <div class="oc-sub">Total YES, NO, and Neutral/N/A votes across every theme</div>
+      <div class="oc-sub">Higher percentage of No answers could mean that the technology excludes diverse voices and it is not neutral. Your voice might not be represented in its design and deployment so it might be biased.</div>
       <div class="oc-stats" id="oc-stats"></div>
       <div class="chart-h240"><canvas id="chart-overall"></canvas></div>
     </div>
